@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jacob Farmer | Technical Game Designer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0e1117;
+            --card-bg: #161b22;
+            --card-border: #232936;
+            --accent: #58a6ff;
+            --accent-glow: rgba(88, 166, 255, 0.15);
+            --text-main: #f0f6fc;
+            --text-muted: #8b949e;
+            --tag-bg: #21262d;
+            --tag-text: #79c0ff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 0 20px 80px;
+        }
+
+        .container {
+            max-width: 1040px;
+            margin: 0 auto;
+        }
+
+        /* Header & Navigation */
+        header {
+            padding: 60px 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom: 1px solid var(--card-border);
+            margin-bottom: 40px;
+        }
+
+        .hero-title h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 6px;
+        }
+
+        .hero-title p {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent);
+            font-size: 1rem;
+        }
+
+        .links-group {
+            display: flex;
+            gap: 14px;
+        }
+
+        .action-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-main);
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            border-color: var(--accent);
+            background: var(--tag-bg);
+            color: var(--accent);
+        }
+
+        .action-btn.primary {
+            background: var(--accent);
+            color: #090d16;
+            border-color: var(--accent);
+            font-weight: 600;
+        }
+
+        .action-btn.primary:hover {
+            opacity: 0.9;
+            background: #79c0ff;
+        }
+
+        /* Project Cards Grid */
+        .section-header {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(460px, 1fr));
+            gap: 24px;
+            margin-bottom: 50px;
+        }
+
+        @media (max-width: 600px) {
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+        }
+
+        .project-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+            box-shadow: 0 12px 28px var(--accent-glow);
+        }
+
+        .project-img-wrapper {
+            position: relative;
+            width: 100%;
+            height: 230px;
+            background-color: #0b0e14;
+            overflow: hidden;
+        }
+
+        .project-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .project-card:hover .project-img {
+            transform: scale(1.03);
+        }
+
+        .project-content {
+            padding: 22px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+            gap: 12px;
+        }
+
+        .project-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .engine-badge {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--tag-bg);
+            color: var(--tag-text);
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid rgba(121, 192, 255, 0.2);
+            white-space: nowrap;
+        }
+
+        .project-role {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .project-desc {
+            font-size: 0.92rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 18px;
+        }
+
+        .card-footer {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--accent);
+        }
+
+        /* Archive Bar */
+        .archive-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 18px 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .archive-card h4 {
+            font-size: 1rem;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+
+        .archive-card p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Interactive Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(6px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            width: 100%;
+            max-width: 820px;
+            max-height: 90vh;
+            border-radius: 12px;
+            overflow-y: auto;
+            position: relative;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.8rem;
+            cursor: pointer;
+            line-height: 1;
+            z-index: 2;
+        }
+
+        .close-btn:hover {
+            color: var(--text-main);
+        }
+
+        /* Modal Banner Hero (Replaces Video) */
+        .modal-banner-container {
+            width: 100%;
+            height: 280px;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #0b0e14;
+            margin: 18px 0 22px;
+            border: 1px solid var(--card-border);
+            position: relative;
+        }
+
+        .modal-banner-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .modal-tabs {
+            display: flex;
+            gap: 10px;
+            border-bottom: 1px solid var(--card-border);
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            padding: 10px 16px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: color 0.2s ease;
+        }
+
+        .tab-btn.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        .tab-content {
+            display: none;
+            color: #c9d1d9;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .tab-content ul {
+            padding-left: 20px;
+            margin: 10px 0;
+        }
+
+        .tab-content li {
+            margin-bottom: 10px;
+        }
+
+        .modal-links {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid var(--card-border);
+            display: flex;
+            gap: 12px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="hero-title">
+            <h1>Jacob Farmer</h1>
+            <p>Technical Game Designer & Systems Developer</p>
+        </div>
+        <div class="links-group">
+            <a href="https://jacobfarmerdev.itch.io/" target="_blank" class="action-btn">itch.io Store</a>
+            <a href="Jacob%20Farmer%20-%20Resume.pdf" download="Jacob Farmer - Resume.pdf" class="action-btn primary">Download Resume</a>
+        </div>
+    </header>
+
+    <div class="section-header">Featured Unreal Engine 5 Projects</div>
+
+    <div class="projects-grid">
+        <!-- 1. Feral Grounds: Survivor -->
+        <article class="project-card" onclick="openModal('feral-grounds')">
+            <div class="project-img-wrapper">
+                <img class="project-img" src="images/FeralGrounds.png" alt="Feral Grounds: Survivor Screenshot">
+            </div>
+            <div class="project-content">
+                <div class="project-header">
+                    <div>
+                        <h3 class="project-title">Feral Grounds: Survivor</h3>
+                        <p class="project-role">Solo Developer</p>
+                    </div>
+                    <span class="engine-badge">Unreal Engine 5</span>
+                </div>
+                <p class="project-desc">A high-density 2D horde survival game built in UE5 featuring custom actor pooling, 7 modular weapon architectures, and an escalating 5-minute difficulty curve managing up to 300 concurrent enemies.</p>
+                <div class="card-footer">
+                    <span>Performance & Systems Breakdown</span>
+                    <span>&rarr;</span>
+                </div>
+            </div>
+        </article>
+
+        <!-- 2. Dead Circuit -->
+        <article class="project-card" onclick="openModal('dead-circuit')">
+            <div class="project-img-wrapper">
+                <img class="project-img" src="images/DeadCircuit.png" alt="Dead Circuit Screenshot">
+            </div>
+            <div class="project-content">
+                <div class="project-header">
+                    <div>
+                        <h3 class="project-title">Dead Circuit</h3>
+                        <p class="project-role">Solo Developer</p>
+                    </div>
+                    <span class="engine-badge">Unreal Engine 5</span>
+                </div>
+                <p class="project-desc">A retro-styled arcade zombie survival shooter engineered from scratch in UE5. Features dynamic enemy wave directors, responsive combat mechanics, and weapon progression loops.</p>
+                <div class="card-footer">
+                    <span>Combat Systems & Loop</span>
+                    <span>&rarr;</span>
+                </div>
+            </div>
+        </article>
+
+        <!-- 3. John Shooter -->
+        <article class="project-card" onclick="openModal('john-shooter')">
+            <div class="project-img-wrapper">
+                <img class="project-img" src="images/JohnShooter.png" alt="John Shooter Screenshot">
+            </div>
+            <div class="project-content">
+                <div class="project-header">
+                    <div>
+                        <h3 class="project-title">John Shooter</h3>
+                        <p class="project-role">Lead Technical Designer</p>
+                    </div>
+                    <span class="engine-badge">Unreal Engine 5</span>
+                </div>
+                <p class="project-desc">A fast-paced FPS roguelike prototype centered on tight movement mechanics, modular stat modification architecture, and scalable weapon behaviors.</p>
+                <div class="card-footer">
+                    <span>Blueprint Framework</span>
+                    <span>&rarr;</span>
+                </div>
+            </div>
+        </article>
+
+        <!-- 4. Pookie Puca -->
+        <article class="project-card" onclick="openModal('pookie-puca')">
+            <div class="project-img-wrapper">
+                <img class="project-img" src="images/PookiePuca.png" alt="Pookie Puca Screenshot">
+            </div>
+            <div class="project-content">
+                <div class="project-header">
+                    <div>
+                        <h3 class="project-title">Pookie Puca</h3>
+                        <p class="project-role">Level & Systems Designer</p>
+                    </div>
+                    <span class="engine-badge">Unreal Engine 5</span>
+                </div>
+                <p class="project-desc">A narrative-driven comedic horror game built in team collaboration for Scream Jam 2025. Showcases puzzle minigames, atmospheric pacing, and event trigger systems.</p>
+                <div class="card-footer">
+                    <span>Jam Collaboration & Design</span>
+                    <span>&rarr;</span>
+                </div>
+            </div>
+        </article>
+    </div>
+
+    <!-- Archive / Game Jam Section -->
+    <div class="section-header">Selected Game Jams & Versatility</div>
+    <div class="archive-card">
+        <div>
+            <h4>Half Pint Heroes (Global Game Jam)</h4>
+            <p>2D puzzle-platformer created in Unity featuring simultaneous multi-character switching puzzles and custom C# gameplay mechanics.</p>
+        </div>
+        <a href="https://jacobfarmerdev.itch.io/" target="_blank" class="action-btn">View on itch.io &rarr;</a>
+    </div>
+</div>
+
+<!-- Modal Container -->
+<div id="projectModal" class="modal" onclick="closeModalOnBackdrop(event)">
+    <div class="modal-content">
+        <button class="close-btn" onclick="closeModal()">&times;</button>
+        <h2 id="modalTitle" style="font-size: 1.8rem; margin-bottom: 4px;"></h2>
+        <p id="modalRole" style="font-family: 'JetBrains Mono', monospace; color: var(--accent); font-size: 0.9rem; margin-bottom: 12px;"></p>
+        
+        <!-- Crisp Hero Image Display -->
+        <div class="modal-banner-container">
+            <img id="modalBanner" class="modal-banner-img" src="" alt="Project Banner Screenshot">
+        </div>
+
+        <div class="modal-tabs">
+            <button class="tab-btn active" onclick="switchTab('overview')">Overview</button>
+            <button class="tab-btn" onclick="switchTab('technical')">Technical Systems</button>
+            <button class="tab-btn" onclick="switchTab('design')">Design & Balance</button>
+        </div>
+
+        <div id="tabOverview" class="tab-content active"></div>
+        <div id="tabTechnical" class="tab-content"></div>
+        <div id="tabDesign" class="tab-content"></div>
+
+        <div id="modalLinks" class="modal-links"></div>
+    </div>
+</div>
+
+<script>
+    const projectData = {
+        'feral-grounds': {
+            title: "Feral Grounds: Survivor",
+            role: "Solo Technical Designer & Developer (Unreal Engine 5)",
+            image: "images/FeralGrounds.png",
+            overview: `
+                <p><strong>Feral Grounds: Survivor</strong> is an intense, retro-styled 2D horde survival game built from the ground up in Unreal Engine 5. Players control a lone cat fighting through dense, escalating swarms of woodland beasts in an authentic 5-minute bullet-hell gauntlet.</p>
+                <p style="margin-top: 10px;">Engineered as a balance and architecture experiment, the project stress-tests UE5's Paper2D systems with up to 300 simultaneous active combatants, dynamic upgrade synergies, and modular projectile cascades.</p>
+            `,
+            technical: `
+                <ul>
+                    <li><strong>High-Density Actor Pooling:</strong> Engineered custom Blueprint actor pools to sustain smooth 60 FPS combat under peak stress loads of up to 300 active enemy combatants.</li>
+                    <li><strong>Modular Weapon Framework:</strong> Implemented 7 distinct weapon architectures with independent upgrade pipelines across a 20-tier level progression.</li>
+                    <li><strong>Scalable Time Dilation:</strong> Designed custom engine speed toggles (Slow, Normal, Fast, and Insane) that alter gameplay pacing without compromising collision accuracy or projectile ticks.</li>
+                    <li><strong>Destructible Arena Mechanics:</strong> Structured physics-free destructible braziers delivering utility drops (healing, wave-clearing nukes, map-wide pickup magnets).</li>
+                </ul>
+            `,
+            design: `
+                <ul>
+                    <li><strong>Mathematical Difficulty Tuning:</strong> Balanced an approachable onboarding curve that escalates into an intense DPS-check gauntlet at the 4-minute threshold.</li>
+                    <li><strong>Tight Game Feel:</strong> Engineered responsive hit feedback, camera shakes, and enemy knockback scaling paired with multi-frame sprite flipbooks.</li>
+                    <li><strong>Streamlined Dual-Mode Controls:</strong> Implemented seamless upgrade selection through both mouse clicks and instant numeric keyboard shortcuts (1, 2, 3).</li>
+                </ul>
+            `,
+            links: `
+                <a href="https://jacobfarmerdev.itch.io/" target="_blank" class="action-btn primary">Play on itch.io &rarr;</a>
+            `
+        },
+        'dead-circuit': {
+            title: "Dead Circuit",
+            role: "Solo Developer & Technical Combat Designer (Unreal Engine 5)",
+            image: "images/DeadCircuit.png",
+            overview: `
+                <p><strong>Dead Circuit</strong> is a published solo retro-arcade zombie survival game built in Unreal Engine 5. Developed to showcase end-to-end game production, responsive line-trace combat, and modular round progression.</p>
+            `,
+            technical: `
+                <ul>
+                    <li><strong>AI Spawning Director:</strong> Engineered an event-driven horde spawning system using Blueprint interfaces and dynamic density caps.</li>
+                    <li><strong>Weapon & Hit Registration:</strong> Built raycast line-trace shooting mechanics with custom surface impacts, localized damage multipliers, and recoil recovery.</li>
+                    <li><strong>Game State Persistence:</strong> Implemented economy and score-tracking systems persisting across survival sessions.</li>
+                </ul>
+            `,
+            design: `
+                <ul>
+                    <li><strong>Loop Pacing:</strong> Iterated weapon costs and ammo scarcity to produce a classic arcade risk-vs-reward loop.</li>
+                    <li><strong>Audio & Visual Juice:</strong> Paired muzzle flashes, screen shake, and dynamic lighting with directional audio cues.</li>
+                </ul>
+            `,
+            links: `
+                <a href="https://jacobfarmerdev.itch.io/" target="_blank" class="action-btn primary">Play on itch.io &rarr;</a>
+            `
+        },
+        'john-shooter': {
+            title: "John Shooter",
+            role: "Lead Technical Designer (Unreal Engine 5)",
+            image: "images/JohnShooter.png",
+            overview: `
+                <p><strong>John Shooter</strong> is an Unreal Engine 5 first-person shooter roguelike prototype centered around character mechanics for Billy the Quickhand and dynamic trial rooms.</p>
+            `,
+            technical: `
+                <ul>
+                    <li><strong>Modular Stat Modifier System:</strong> Architected a lightweight, decoupled stat system enabling real-time stacking of movement, attack, and perk modifiers.</li>
+                    <li><strong>Procedural Weapon Mechanics:</strong> Scripted modular weapon components with custom recoil patterns, reload states, and firing modes.</li>
+                </ul>
+            `,
+            design: `
+                <ul>
+                    <li><strong>Movement Pacing:</strong> Tuned player acceleration, slide friction, and airborne strafe velocities for fluid combat flow.</li>
+                    <li><strong>Combat Encounter Design:</strong> Built combat arenas utilizing verticality, line-of-sight breaks, and predictable spawn queues.</li>
+                </ul>
+            `,
+            links: `
+                <a href="https://jacobfarmerdev.itch.io/" target="_blank" class="action-btn primary">itch.io Project &rarr;</a>
+            `
+        },
+        'pookie-puca': {
+            title: "Pookie Puca",
+            role: "Level & Systems Designer (Scream Jam 2025)",
+            image: "images/PookiePuca.png",
+            overview: `
+                <p><strong>Pookie Puca</strong> is a comedic narrative horror game created in Unreal Engine 5 for Scream Jam 2025 in collaboration with a cross-functional game jam team.</p>
+            `,
+            technical: `
+                <ul>
+                    <li><strong>Trigger & Event Flow:</strong> Scripted environmental puzzle sequencing and narrative triggers through modular Blueprint actors.</li>
+                    <li><strong>Minigame Mechanics:</strong> Designed interactive micro-tasks and UI state changes that influence narrative progression.</li>
+                </ul>
+            `,
+            design: `
+                <ul>
+                    <li><strong>Tension Balancing:</strong> Structured environmental lighting shifts and pacing beats to blend comedic elements with authentic horror suspense.</li>
+                    <li><strong>Rapid Prototyping:</strong> Delivered mechanics and level dressing under tight 72-hour jam constraints.</li>
+                </ul>
+            `,
+            links: `
+                <a href="https://jacobfarmerdev.itch.io/" target="_blank" class="action-btn primary">Play on itch.io &rarr;</a>
+            `
+        }
+    };
+
+    
+    function openModal(projectId) {
+        const data = projectData[projectId];
+        if (!data) return;
+
+        document.getElementById('modalTitle').textContent = data.title;
+        document.getElementById('modalRole').textContent = data.role;
+        
+        const banner = document.getElementById('modalBanner');
+        banner.src = data.image;
+
+        document.getElementById('tabOverview').innerHTML = data.overview;
+        document.getElementById('tabTechnical').innerHTML = data.technical;
+        document.getElementById('tabDesign').innerHTML = data.design;
+        document.getElementById('modalLinks').innerHTML = data.links;
+
+        switchTab('overview');
+        document.getElementById('projectModal').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        const modal = document.getElementById('projectModal');
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+
+    function closeModalOnBackdrop(event) {
+        if (event.target.id === 'projectModal') {
+            closeModal();
+        }
+    }
+
+    function switchTab(tabName) {
+        const tabs = document.querySelectorAll('.tab-btn');
+        tabs.forEach(tab => tab.classList.remove('active'));
+
+        const contents = document.querySelectorAll('.tab-content');
+        contents.forEach(c => c.classList.remove('active'));
+
+        if (tabName === 'overview') {
+            tabs[0].classList.add('active');
+            document.getElementById('tabOverview').classList.add('active');
+        } else if (tabName === 'technical') {
+            tabs[1].classList.add('active');
+            document.getElementById('tabTechnical').classList.add('active');
+        } else if (tabName === 'design') {
+            tabs[2].classList.add('active');
+            document.getElementById('tabDesign').classList.add('active');
+        }
+    }
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeModal();
+    });
+</script>
+
+</body>
+</html>
