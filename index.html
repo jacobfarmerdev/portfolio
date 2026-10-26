@@ -64,7 +64,64 @@
 
         .links-group {
             display: flex;
+            flex-wrap: wrap;
+            align-items: center;
             gap: 14px;
+        }
+
+        .email-pill {
+            display: inline-flex;
+            align-items: stretch;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 6px;
+            overflow: hidden;
+            transition: border-color 0.2s ease;
+        }
+
+        .email-pill:hover {
+            border-color: var(--accent);
+        }
+
+        .email-copy-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            padding: 8px 14px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .email-copy-btn:hover {
+            background: var(--tag-bg);
+            color: var(--accent);
+        }
+
+        .email-copy-btn.copied {
+            color: #3fb950;
+            background: rgba(63, 185, 80, 0.1);
+        }
+
+        .email-mailto-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 11px;
+            color: var(--text-muted);
+            border-left: 1px solid var(--card-border);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .email-mailto-btn:hover {
+            background: var(--tag-bg);
+            color: var(--accent);
         }
 
         .action-btn {
@@ -370,7 +427,16 @@
             <p>Technical Game Designer & Systems Developer</p>
         </div>
         <div class="links-group">
-            <a href="https://jacobfarmerdev.itch.io/" target="_blank" class="action-btn">itch.io Store</a>
+            <div class="email-pill">
+                <button type="button" id="emailCopyBtn" class="email-copy-btn" onclick="copyEmail()" title="Click to copy email">
+                    <svg id="emailCopyIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    <span id="emailCopyText">contact@jacobfarmerdev.com</span>
+                </button>
+                <a href="mailto:contact@jacobfarmerdev.com" class="email-mailto-btn" title="Send email" aria-label="Send email">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                </a>
+            </div>
+            <a href="https://jacobfarmerdev.itch.io/" target="_blank" rel="noopener noreferrer" class="action-btn">itch.io Store</a>
             <a href="Jacob%20Farmer%20-%20Resume.pdf" target="_blank" rel="noopener noreferrer" class="action-btn primary">View Resume</a>
         </div>
     </header>
@@ -470,7 +536,7 @@
             <h4>Half Pint Heroes (Global Game Jam)</h4>
             <p>2D puzzle-platformer created in Unity featuring simultaneous multi-character switching puzzles and custom C# gameplay mechanics.</p>
         </div>
-        <a href="https://jacobfarmerdev.itch.io/" target="_blank" class="action-btn">View on itch.io &rarr;</a>
+        <a href="https://jacobfarmerdev.itch.io/" target="_blank" rel="noopener noreferrer" class="action-btn">View on itch.io &rarr;</a>
     </div>
 </div>
 
@@ -501,6 +567,27 @@
 </div>
 
 <script>
+    let copyTimeout;
+    function copyEmail() {
+        const email = 'contact@jacobfarmerdev.com';
+        navigator.clipboard.writeText(email).then(() => {
+            const btn = document.getElementById('emailCopyBtn');
+            const textSpan = document.getElementById('emailCopyText');
+            const icon = document.getElementById('emailCopyIcon');
+
+            btn.classList.add('copied');
+            textSpan.textContent = 'Copied!';
+            icon.innerHTML = '<polyline points="20 6 9 17 4 12"></polyline>';
+
+            clearTimeout(copyTimeout);
+            copyTimeout = setTimeout(() => {
+                btn.classList.remove('copied');
+                textSpan.textContent = email;
+                icon.innerHTML = '<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>';
+            }, 2000);
+        });
+    }
+
     const projectData = {
         'feral-grounds': {
             title: "Feral Grounds: Survivor",
@@ -526,7 +613,7 @@
                 </ul>
             `,
             links: `
-                <a href="https://jacobfarmerdev.itch.io/" target="_blank" class="action-btn primary">Play on itch.io &rarr;</a>
+                <a href="https://jacobfarmerdev.itch.io/" target="_blank" rel="noopener noreferrer" class="action-btn primary">Play on itch.io &rarr;</a>
             `
         },
         'dead-circuit': {
@@ -550,7 +637,7 @@
                 </ul>
             `,
             links: `
-                <a href="https://jacobfarmerdev.itch.io/" target="_blank" class="action-btn primary">Play on itch.io &rarr;</a>
+                <a href="https://jacobfarmerdev.itch.io/" target="_blank" rel="noopener noreferrer" class="action-btn primary">Play on itch.io &rarr;</a>
             `
         },
         'john-shooter': {
@@ -573,7 +660,7 @@
                 </ul>
             `,
             links: `
-                <a href="https://jacobfarmerdev.itch.io/" target="_blank" class="action-btn primary">itch.io Project &rarr;</a>
+                <a href="https://jacobfarmerdev.itch.io/" target="_blank" rel="noopener noreferrer" class="action-btn primary">itch.io Project &rarr;</a>
             `
         },
         'pookie-puca': {
@@ -596,7 +683,7 @@
                 </ul>
             `,
             links: `
-                <a href="https://jacobfarmerdev.itch.io/" target="_blank" class="action-btn primary">Play on itch.io &rarr;</a>
+                <a href="https://jacobfarmerdev.itch.io/" target="_blank" rel="noopener noreferrer" class="action-btn primary">Play on itch.io &rarr;</a>
             `
         }
     };
